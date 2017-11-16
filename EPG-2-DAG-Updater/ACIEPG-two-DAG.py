@@ -116,7 +116,7 @@ def regdynamic(apikey, host, add, remove, fwvsys):
     xml_blob +="</unregister></payload></uid-message>"
     #print xml_blob
     call = "https://%s/api/?type=%s&vsys=%s&cmd=%s&key=%s" % (host, type, fwvsys, xml_blob, apikey)
-    print call
+#    print call
     fw_results=requests.get(call, verify=False)
     if fw_results.status_code == 200:
         root = ET.fromstring(fw_results.text)
