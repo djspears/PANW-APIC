@@ -1,9 +1,13 @@
 # ACI EGP TO PANW DAG UPDATER
 
+This example code may be used capture select ACI EPG learned Endpoints and populate PANW Dynamic Address Groups.  The script assumes the following information is defined:
 
+* Tenant that the EPG's reside in.
+* EPG Name.
+* Firewall VSYS that the DAG should be placed in.
 
-
-
+What the script does:
+Creates a DAG if one does not exist in the format "tenant--EPG" in the defined PANW vsys.  Extracts the Learned Enpoint information from the APIC controller and checks to see if the firewall has correct entries.  If additions for deletions are needed the script creates an API call to make the appropriate changes.  A firewall commit is not required unless Address Objects need to be added or removed.
 
 Support Policy
 
