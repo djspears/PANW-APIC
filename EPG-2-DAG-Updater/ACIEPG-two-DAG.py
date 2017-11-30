@@ -23,15 +23,19 @@ import re
 import yaml
 
 config = yaml.load(open('/usr/lib/yaml/aci.yaml'))
+#These define the username and password used for both the firewall and APIC.  In this case the username/passwords are the same for both.
 name = config['user']['user']
 pwd = config['user']['password']
+#This creates and defines the set of information used to pull EGP Endpoints and populate vsys.  The format of the sets is ('Tenant','EGP-NAME', 'PANW VSYS')
 ten_epg_vsys=set()
 ten_epg_vsys = (('Demo1','Demo1-L2-S2','vsys3'),('Demo1','Demo1-L2-S1','vsys3'),('Demo1','DB-L3-EPG','vsys3'),\
 ('Demo1','Web-L3-EPG','vsys3'),('Demo-2','WEB-EPG-L3','vsys4'),('Demo-2','Demo2-L2-S2','vsys4'),('Demo-2','Demo2-L2-S1','vsys4'),\
 ('Demo-2','DB-EPG-L3','vsys4'),('Demo1','Demo1-L2-S2','vsys6'),('Demo1','Demo1-L2-S1','vsys6'),('Demo1','DB-L3-EPG','vsys6'),\
 ('Demo1','Web-L3-EPG','vsys6'),('Demo-2','WEB-EPG-L3','vsys6'),('Demo-2','Demo2-L2-S2','vsys6'),('Demo-2','Demo2-L2-S1','vsys6'),('Demo-2','DB-EPG-L3','vsys6'))
+# Define the IP of the firewall
 firewallip='10.3.4.243'
-dagvsyslist=('vys1','vsys3','vsys4','vsys6')
+#This is a lazy list of vsys that are in the above set.
+dagvsyslist=('vsys3','vsys4','vsys6')
 
 
 def FW_Commit(Firewall,fwkey):
@@ -116,7 +120,7 @@ def regdynamic(apikey, host, add, remove, fwvsys):
     xml_blob +="</unregister></payload></uid-message>"
     #print xml_blob
     call = "https://%s/api/?type=%s&vsys=%s&cmd=%s&key=%s" % (host, type, fwvsys, xml_blob, apikey)
-#    print call
+    #print call
     fw_results=requests.get(call, verify=False)
     if fw_results.status_code == 200:
         root = ET.fromstring(fw_results.text)
@@ -239,11 +243,11 @@ def main(luser,lpass,lhost,tenepgvsys):
 
 #   Identify the DAGs that need to be removed
 	deldag = tagip - aciip
-	print "deldag = ",deldag
+	#print "deldag = ",deldag
 	
 #   Identify which DAGs need to be updated
 	fwdaglist = aciip - tagip
-	print "fwdaglist add = ",fwdaglist
+	#print "fwdaglist add = ",fwdaglist
 	if len(deldag) !=0 or len(fwdaglist)!=0:
 		print "\nDAG IPS have changed and some need to be added to the firewall Here is the API update:\n"
 		for dvl in dagvsyslist:
