@@ -22,7 +22,7 @@ import acitoolkit.acitoolkit as aci
 import re
 import yaml
 
-config = yaml.load(open('/usr/lib/yaml/aci.yaml'))
+config = yaml.load(open('/usr/lib/yaml/creds.yaml'))
 #These define the username and password used for both the firewall and APIC.  In this case the username/passwords are the same for both.
 name = config['user']['user']
 pwd = config['user']['password']
